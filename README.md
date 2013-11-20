@@ -1,4 +1,4 @@
-extension-for-chrome
+Extension for Chrome
 ====================
 
-Broswer extension for Bluz developers
+Browser extension for Bluz developers
