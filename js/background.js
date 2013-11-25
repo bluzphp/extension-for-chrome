@@ -2,22 +2,21 @@ var Background = (function (){
     // variables ----------------------------------------------------------------
     var _this 		    = {},
         _debugParams    = null,
-        _barSettings    = localStorage.headers_details || 'Bluz-Bar, Bluz-Notify',
         _barParams      = {},
         _currPageUrl    = null,
         _currPosition   = null,
         a               = null,
+        COOKIE          = {},
         regExprDomain   = new RegExp(/[a-zA-Z0-9](-*[a-zA-Z0-9]+)*(\.[a-zA-Z0-9](-*[a-zA-Z0-9]+)*)+/);
 
-    var COOKIE = {
-//        debug       : {"name": "BLUZ_DEBUG", "active": false},
-//        profiler    : {"name": "XDEBUG_PROFILE", "active": false}
-        debug       : {"name": localStorage.cookie_debug || 'BLUZ_DEBUG', "active": false},
-        profiler    : {"name": localStorage.cookie_profile || 'XDEBUG_PROFILE', "active": false}
-    }
 
     // initialize ---------------------------------------------------------------
     _this.init = function (){
+        COOKIE = {
+            debug       : {"name": localStorage.cookie_debug || 'BLUZ_DEBUG', "active": false},
+            profiler    : {"name": localStorage.cookie_profile || 'XDEBUG_PROFILE', "active": false}
+        }
+
         a = new myApi();
 
         // receive post messages from "inject.js" and any iframes
@@ -71,13 +70,19 @@ var Background = (function (){
     };
 
     function onHeadersReceived(details){
+        var headersParam = {
+            consoleParam    : localStorage.headers_details || 'Bluz-Bar, Bluz-Notify',
+            pageParam       : localStorage.header_bar || 'Bluz-Debug'
+
+        }
+
         if (details.type == 'main_frame' || details.type == 'xmlhttprequest') {
-            details.responseHeaders.forEach(function(val){ console.log(val.name);
-                if (val.name == COOKIE.debug.name) {
+            details.responseHeaders.forEach(function(val){
+                if (val.name == headersParam.pageParam) {
                     _debugParams = val.value;
                 }
 
-                if (_barSettings.indexOf(val.name) > -1) {
+                if (headersParam.consoleParam.indexOf(val.name) > -1) {
                     _barParams[val.name] = val.value;
                 }
             });
