@@ -113,11 +113,12 @@ var Inject = (function (){
 
     function addParamsToConsole(params){ //console.log(params);
         for (var val in params){
-            console.log(val);
+            console.group(val);
             var param = JSON.parse(params[val]);
             for ( var i in param) {
                 console.log(i, param[i]);
             }
+            console.groupEnd();
         }
     }
 

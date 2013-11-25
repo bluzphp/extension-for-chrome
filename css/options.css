@@ -27,6 +27,10 @@
     padding-right: 53px;
 }
 
+.header-bar {
+    padding-right: 81px;
+}
+
 #status {
     font-size: 11px;
     color: #d9534f;

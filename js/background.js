@@ -2,7 +2,6 @@ var Background = (function (){
     // variables ----------------------------------------------------------------
     var _this 		    = {},
         _debugParams    = null,
-        _barSettings    = localStorage.headers_details || 'Bluz-Bar, Bluz-Notify',
         _barParams      = {},
         _currPageUrl    = null,
         _currPosition   = null,
@@ -10,10 +9,14 @@ var Background = (function (){
         regExprDomain   = new RegExp(/[a-zA-Z0-9](-*[a-zA-Z0-9]+)*(\.[a-zA-Z0-9](-*[a-zA-Z0-9]+)*)+/);
 
     var COOKIE = {
-//        debug       : {"name": "BLUZ_DEBUG", "active": false},
-//        profiler    : {"name": "XDEBUG_PROFILE", "active": false}
         debug       : {"name": localStorage.cookie_debug || 'BLUZ_DEBUG', "active": false},
         profiler    : {"name": localStorage.cookie_profile || 'XDEBUG_PROFILE', "active": false}
+    }
+
+    var HEADERS = {
+        consoleParam    : localStorage.headers_details || 'Bluz-Bar, Bluz-Notify',
+        pageParam       : localStorage.header_bar || 'Bluz-Debug'
+
     }
 
     // initialize ---------------------------------------------------------------
@@ -73,11 +76,11 @@ var Background = (function (){
     function onHeadersReceived(details){
         if (details.type == 'main_frame' || details.type == 'xmlhttprequest') {
             details.responseHeaders.forEach(function(val){ console.log(val.name);
-                if (val.name == COOKIE.debug.name) {
+                if (val.name == HEADERS.pageParam) {
                     _debugParams = val.value;
                 }
 
-                if (_barSettings.indexOf(val.name) > -1) {
+                if (HEADERS.consoleParam.indexOf(val.name) > -1) {
                     _barParams[val.name] = val.value;
                 }
             });
