@@ -10,9 +10,9 @@ var Background = (function (){
         regExprDomain   = new RegExp(/[a-zA-Z0-9](-*[a-zA-Z0-9]+)*(\.[a-zA-Z0-9](-*[a-zA-Z0-9]+)*)+/);
 
     var COOKIE = {
-        debug       : {"name": "debug", "active": false},
-        profiler    : {"name": "XDEBUG-PROFILE", "active": false}
-    }
+        debug       : {"name": "BLUZ_DEBUG", "active": false},
+        profiler    : {"name": "XDEBUG_PROFILE", "active": false}
+    };
 
     // initialize ---------------------------------------------------------------
     _this.init = function (){
