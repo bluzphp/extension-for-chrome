@@ -28,7 +28,6 @@ var Inject = (function (){
 
         // add the "bluz" iframes
         getView('bluz', _container);
-        //getView('details', _container);
 
         // listen to the iframes/webpages message
         window.addEventListener("message", dom_onMessage, false);
@@ -147,7 +146,7 @@ var Inject = (function (){
         }
     };
 
-    function message_onOpenPlugin(data) { //console.log('inject > ', data);
+    function message_onOpenPlugin(data) {
         if (data.cookie.debug.active) {
             if (data.source == 'bluz') { // frames: 'bluz', 'details'
                 addParamsToConsole(data.barParams);

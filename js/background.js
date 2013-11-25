@@ -10,14 +10,15 @@ var Background = (function (){
         regExprDomain   = new RegExp(/[a-zA-Z0-9](-*[a-zA-Z0-9]+)*(\.[a-zA-Z0-9](-*[a-zA-Z0-9]+)*)+/);
 
     var COOKIE = {
-        debug       : {"name": "BLUZ_DEBUG", "active": false},
-        profiler    : {"name": "XDEBUG_PROFILE", "active": false}
-    };
+//        debug       : {"name": "BLUZ_DEBUG", "active": false},
+//        profiler    : {"name": "XDEBUG_PROFILE", "active": false}
+        debug       : {"name": localStorage.cookie_debug || 'BLUZ_DEBUG', "active": false},
+        profiler    : {"name": localStorage.cookie_profile || 'XDEBUG_PROFILE', "active": false}
+    }
 
     // initialize ---------------------------------------------------------------
     _this.init = function (){
         a = new myApi();
-        //initSettings();
 
         // receive post messages from "inject.js" and any iframes
         chrome.extension.onRequest.addListener(onPostMessage);
@@ -31,36 +32,24 @@ var Background = (function (){
     };
 
     // private functions --------------------------------------------------------
-        function processMessage (request){
-            // process the request
-            switch (request.message){
-                case 'all-iframes-loaded': message_allIframesLoaded(request.data); break;
-                case 'details-activate1': message_onDetailsActivate(request.data); break;
-                case 'cookie-add': message_onCookieAdd(request.data); break;
-                case 'cookie-remove': message_onCookieRemove(request.data); break;
-            }
-        };
-
-        function updateCurrentTab (){
-            chrome.tabs.getSelected(null, function (tab){
-                _currPageUrl = tab.url;
-                if (_currPageUrl.match(new RegExp('https?'))) { // disable this action for url = chrome://extensions/
-                    _this.setPositionPlugin();
-                }
-            })
-
+    function processMessage (request){
+        // process the request
+        switch (request.message){
+            case 'all-iframes-loaded': message_allIframesLoaded(request.data); break;
+            case 'cookie-add': message_onCookieAdd(request.data); break;
+            case 'cookie-remove': message_onCookieRemove(request.data); break;
         }
+    };
 
-//        function initSettings() {
-//            var xhr = new XMLHttpRequest();
-//            xhr.onreadystatechange = function() {
-//                if (xhr.readyState == 4) {
-//                    _barSettings = $.parseJSON(xhr.responseText).barNameParams;
-//                }
-//            };
-//            xhr.open('GET','/settings.json', true);
-//            xhr.send();
-//        }
+    function updateCurrentTab (){
+        chrome.tabs.getSelected(null, function (tab){
+            _currPageUrl = tab.url;
+            if (_currPageUrl.match(new RegExp('https?'))) { // disable this action for url = chrome://extensions/
+                _this.setPositionPlugin();
+            }
+        })
+
+    }
 
 
     // events -------------------------------------------------------------------
@@ -83,8 +72,8 @@ var Background = (function (){
 
     function onHeadersReceived(details){
         if (details.type == 'main_frame' || details.type == 'xmlhttprequest') {
-            details.responseHeaders.forEach(function(val){ //console.log(key, val);
-                if (val.name == 'Bluz-Debug') {
+            details.responseHeaders.forEach(function(val){ console.log(val.name);
+                if (val.name == COOKIE.debug.name) {
                     _debugParams = val.value;
                 }
 
@@ -115,11 +104,6 @@ var Background = (function (){
     function message_allIframesLoaded (data){
         updateCurrentTab();
     };
-
-    function message_onDetailsActivate(data) {
-//        _this.tell('open-details', { barParams: _barParams});
-//        _barParams = {};
-    }
 
     function message_onCookieAdd(data){
         _this.addCookie(data.cookie);
@@ -205,7 +189,6 @@ var Background = (function (){
                     {view:'*', debugParams: _debugParams, cookie : COOKIE, position : _currPosition, barParams: _barParams}
                 );
                 _barParams = {};
-                //_debugParams = null;
             }
 
         });
@@ -214,6 +197,7 @@ var Background = (function (){
     _this.refreshPlugin = function(){
         updateCurrentTab();
     }
+
 
     return _this;
 }());
