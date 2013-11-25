@@ -10,9 +10,9 @@ var Background = (function (){
         regExprDomain   = new RegExp(/[a-zA-Z0-9](-*[a-zA-Z0-9]+)*(\.[a-zA-Z0-9](-*[a-zA-Z0-9]+)*)+/);
 
     var COOKIE = {
-        debug       : {"name": "debug", "active": false},
-        profiler    : {"name": "XDEBUG-PROFILE", "active": false}
-    }
+        debug       : {"name": "BLUZ_DEBUG", "active": false},
+        profiler    : {"name": "XDEBUG_PROFILE", "active": false}
+    };
 
     // initialize ---------------------------------------------------------------
     _this.init = function (){
@@ -84,7 +84,7 @@ var Background = (function (){
     function onHeadersReceived(details){
         if (details.type == 'main_frame' || details.type == 'xmlhttprequest') {
             details.responseHeaders.forEach(function(val){ //console.log(key, val);
-                if (val.name == 'Bluz-Debug') {
+                if (val.name == 'BLUZ_DEBUG') {
                     _debugParams = val.value;
                 }
 

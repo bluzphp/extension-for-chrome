@@ -3,14 +3,6 @@
 	"version"			: "1.0",
 	"description"		: "Bluz plugin",
 	"manifest_version"	: 2,
-//    "app": {
-//        "urls": [
-//            ""
-//        ],
-//        "launch": {
-//            ""
-//        }
-//    },
 	"icons"				: {
         "128": "images/bluz-128.png",
         "64": "images/bluz-64.png",
@@ -35,7 +27,6 @@
 		"html/iframe/*"
 	],
 	"permissions"		: [
-        //"background",
         "cookies",
         "tabs",
 		"webRequest",

@@ -23,8 +23,8 @@
     }
 
     function reset_options() {
-        localStorage["cookie_debug"] = 'Bluz-Debug';
-        localStorage["cookie_profile"] = 'XDEBUG-PROFILE';
+        localStorage["cookie_debug"] = 'BLUZ_DEBUG';
+        localStorage["cookie_profile"] = 'XDEBUG_PROFILE';
         localStorage["headers_details"] = 'Bluz-Bar, Bluz-Notify';
 
         restore_options();
