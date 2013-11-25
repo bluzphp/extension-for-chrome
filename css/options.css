@@ -1,0 +1,34 @@
+.panel-heading {
+    background-color: #101010 !important;
+    color: #fff !important;
+}
+
+.panel-default {
+    width: 600px;
+    margin-left: 25%;
+}
+
+#btn-reset {
+    float: right;
+}
+
+.panel-footer {
+    font-size: 10px;
+    text-align: center;
+    height: 38px;
+    color: #888;
+}
+
+.profile {
+    padding-right: 65px;
+}
+
+.details {
+    padding-right: 53px;
+}
+
+#status {
+    font-size: 11px;
+    color: #d9534f;
+    padding-left: 57px;
+}

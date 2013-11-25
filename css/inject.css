@@ -1,0 +1,11 @@
+#bluz-container{
+    /*top: 0;*/
+    position: fixed;
+    z-index: 9999999999;
+    width: 100%;
+    min-width: 798px;
+}
+
+body {
+    margin-top: 28px;
+}
