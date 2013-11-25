@@ -70,6 +70,9 @@ var Bluz = (function (){
         var params = (data.debugParams !== null) ? (data.debugParams.replace(new RegExp(';', 'g'), '<span></span>')) : '';
 
         a.get('bluzDebug').innerHTML = params;
+        a.get('btnDebug').setAttribute('data-cookie', data.cookie.debug.name);
+        a.get('btnProfiler').setAttribute('data-cookie', data.cookie.profiler.name);
+
         changeStateBtn(data);
         _iframe.tell('open-plugin', data);
     };

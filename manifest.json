@@ -1,9 +1,9 @@
 {
-	"name"				: "Bluz",
-	"version"			: "1.0",
-	"description"		: "Bluz plugin",
-	"manifest_version"	: 2,
-	"icons"				: {
+    "name"				: "Bluz",
+    "version"			: "1.0",
+    "description"		: "Bluz plugin",
+    "manifest_version"	: 2,
+    "icons"				: {
         "128": "images/bluz-128.png",
         "64": "images/bluz-64.png",
         "48": "images/bluz-48.png",
@@ -14,24 +14,24 @@
         "default_popup": "html/popup.html"
     },
     "options_page": "html/options.html",
-	"background"		: {
-		"page"			: "html/background.html"
-	},
-	"content_scripts"	: [{
-		"matches"			: [ "http://*/*","https://*/*" ],
+    "background"		: {
+        "page"			: "html/background.html"
+    },
+    "content_scripts"	: [{
+        "matches"			: [ "http://*/*","https://*/*" ],
         "css"				: [ "css/inject.css" ],
-		"js"				: [  "js/inject.js" ],
-		"run_at" 			: "document_start"
-	}],
-	"web_accessible_resources" : [
-		"html/iframe/*"
-	],
-	"permissions"		: [
+        "js"				: [  "js/inject.js" ],
+        "run_at" 			: "document_start"
+    }],
+    "web_accessible_resources" : [
+        "html/iframe/*"
+    ],
+    "permissions"		: [
         "cookies",
         "tabs",
-		"webRequest",
+        "webRequest",
         "storage",
-	    "http://*/*",
-    	"https://*/*"
-	]
+        "http://*/*",
+        "https://*/*"
+    ]
 }

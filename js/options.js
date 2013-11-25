@@ -1,3 +1,9 @@
+    var COOKIE = {
+        debug   : 'BLUZ_DEBUG',
+        profile : 'XDEBUG_PROFILE',
+        headers : 'Bluz-Bar, Bluz-Notify'
+    }
+
     function get(id){
         return document.getElementById(id);
     }
@@ -15,17 +21,17 @@
         }, 750);
     }
 
-    // Restores select box state to saved value from localStorage.
+
     function restore_options() {
-        get("cookie_debug").setAttribute('value', localStorage["cookie_debug"]);
-        get("cookie_profile").setAttribute('value', localStorage["cookie_profile"]);
-        get("headers_details").setAttribute('value', localStorage["headers_details"]);
+        get("cookie_debug").setAttribute('value', localStorage["cookie_debug"] || COOKIE.debug);
+        get("cookie_profile").setAttribute('value', localStorage["cookie_profile"] || COOKIE.profile);
+        get("headers_details").setAttribute('value', localStorage["headers_details"] || COOKIE.headers);
     }
 
     function reset_options() {
-        localStorage["cookie_debug"] = 'BLUZ_DEBUG';
-        localStorage["cookie_profile"] = 'XDEBUG_PROFILE';
-        localStorage["headers_details"] = 'Bluz-Bar, Bluz-Notify';
+        localStorage["cookie_debug"] = COOKIE.debug;
+        localStorage["cookie_profile"] = COOKIE.profile;
+        localStorage["headers_details"] = COOKIE.headers;
 
         restore_options();
     }

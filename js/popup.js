@@ -5,12 +5,14 @@ var Popup = (function (){
         _currPageUrl    = null,
         _pluginPosition = {},
         _btnActivate    = null,
+        _COOKIE         = {},
         a               = null,
         regExprDomain   = new RegExp(/[a-zA-Z0-9](-*[a-zA-Z0-9]+)*(\.[a-zA-Z0-9](-*[a-zA-Z0-9]+)*)+/);
 
     // initialize ---------------------------------------------------------------
 	_this.init = function (){
         a = new myApi();
+
         _background = chrome.extension.getBackgroundPage().Background;
         _currPageUrl = _background.getCurrentUrl().match(regExprDomain)[0];
         _btnActivate = a.get('btnActivatePlugin');
