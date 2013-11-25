@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/html"><head>
+    <link rel="stylesheet" type="text/css" media="all" href="../css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/options.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Bluz Options</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group input-group">
+                    <span class="input-group-addon">Cookie Activate Plugin</span>
+                    <input type="text" id="cookie_debug" class="form-control" value=""
+                           placeholder="param name for activation plugin" maxlength="255" required="">
+                </div>
+
+                <div class="form-group input-group">
+                    <span class="input-group-addon profile">Cookie Profile</span>
+                    <input type="text" id="cookie_profile" class="form-control" value=""
+                           placeholder="param name for profile" maxlength="255" required="">
+                </div>
+
+                <div class="form-group input-group">
+                    <span class="input-group-addon details">Headers Details</span>
+                    <input type="text" id="headers_details" class="form-control" value=""
+                           placeholder="parameters are separated by commas" maxlength="255" required="">
+                </div>
+
+                <input type="button" value="Save options" class="btn btn-primary" id="btn-save">
+                <span id="status"></span>
+                <input type="button" value="Reset options" class="btn" id="btn-reset">
+            </div>
+            <div class="panel-footer">&copy; NIX Solutions Ltd 2013
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/options.js"></script>
+</body>
+</html>

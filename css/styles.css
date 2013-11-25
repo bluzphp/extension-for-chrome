@@ -1,0 +1,78 @@
+.bluz-plugin {
+  height: 31px;
+  width: 100%;
+  font-family: arial, sun-serif;
+  position: relative;
+}
+
+.bluz-plugin .inner {
+  background-color: #dbdbdb;
+  border: 1px solid #333;
+  padding: 3px 8px;
+}
+
+.bluz-plugin .brand {
+    line-height: 0;
+    font-size: 0;
+    color: transparent;
+    display: block;
+    overflow: hidden;
+    height: 24px;
+    width: 46px;
+    background: url("../images/favicon.ico") no-repeat transparent;
+    background-position: center center;
+    float: left;
+}
+
+.bluz-plugin .title {
+  line-height: 27px;
+  float: left;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 10px;
+}
+
+.btn {
+    border: 1px solid #555555 !important;
+    font-size: 11.5px !important;
+    height: 21px;
+    line-height: 9px !important;
+}
+
+.btn-margin-left {
+    margin-left: 12px;
+}
+
+#bluzDebug, #bluzDebug > span {
+    margin-left: 15px;
+    line-height: inherit;
+    vertical-align: middle;
+    font-weight: bold;
+}
+
+.bluz-details{
+    height: 220px;
+}
+
+.bluz-details .inner {
+  border: 0 !important;
+  min-height: 220px;
+}
+
+#btnDetails {
+    margin-left: 15px;
+
+}
+
+table {
+    font-size: 11px;
+    max-width: 615px !important;
+}
+
+table, td, th {
+    border: 1px solid #222 !important;
+}
+
+/*#pluginBox {*/
+    /*background-color: #dbdbdb;*/
+/*}*/
