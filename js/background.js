@@ -84,7 +84,7 @@ var Background = (function (){
     function onHeadersReceived(details){
         if (details.type == 'main_frame' || details.type == 'xmlhttprequest') {
             details.responseHeaders.forEach(function(val){ //console.log(key, val);
-                if (val.name == 'Bluz-Debug') {
+                if (val.name == 'BLUZ_DEBUG') {
                     _debugParams = val.value;
                 }
 
