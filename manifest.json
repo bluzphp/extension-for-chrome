@@ -1,6 +1,6 @@
 {
     "name"				: "Bluz Toolbar",
-    "version"			: "1.0",
+    "version"			: "1.0.1",
     "description"		: "Plugin for PHP developers of Bluz framework https://github.com/bluzphp",
     "manifest_version"	: 2,
     "icons"				: {
@@ -10,8 +10,7 @@
         "16": "images/bluz-16.png"
     },
     "browser_action"	: {
-        "default_icon"	: "images/bluz-16.png",
-        "default_popup": "html/popup.html"
+        "default_icon"	: "images/bluz-48.png"
     },
     "options_page": "html/options.html",
     "background"		: {
