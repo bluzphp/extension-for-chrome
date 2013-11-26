@@ -10,7 +10,8 @@
         "16": "images/bluz-16.png"
     },
     "browser_action"	: {
-        "default_icon"	: "images/bluz-48.png"
+        "default_icon"	: "images/bluz-48.png",
+        "default_popup": "html/popup.html"
     },
     "options_page": "html/options.html",
     "background"		: {
