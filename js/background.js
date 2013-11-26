@@ -15,7 +15,7 @@ var Background = (function (){
         COOKIE = {
             debug       : {"name": localStorage.cookie_debug || 'BLUZ_DEBUG', "active": false},
             profiler    : {"name": localStorage.cookie_profile || 'XDEBUG_PROFILE', "active": false}
-        }
+        };
 
         a = new myApi();
 
@@ -38,7 +38,7 @@ var Background = (function (){
             case 'cookie-add': message_onCookieAdd(request.data); break;
             case 'cookie-remove': message_onCookieRemove(request.data); break;
         }
-    };
+    }
 
     function updateCurrentTab (){
         chrome.tabs.getSelected(null, function (tab){
@@ -62,19 +62,19 @@ var Background = (function (){
         }
 
         processMessage(request);
-    };
+    }
 
     function onTabActivated (){
         updateCurrentTab();
         _debugParams = null;
-    };
+    }
 
     function onHeadersReceived(details){
         var headersParam = {
             consoleParam    : localStorage.headers_details || 'Bluz-Bar, Bluz-Notify',
             pageParam       : localStorage.header_bar || 'Bluz-Debug'
 
-        }
+        };
 
         if (details.type == 'main_frame' || details.type == 'xmlhttprequest') {
             details.responseHeaders.forEach(function(val){
@@ -108,7 +108,7 @@ var Background = (function (){
     // messages -----------------------------------------------------------------
     function message_allIframesLoaded (data){
         updateCurrentTab();
-    };
+    }
 
     function message_onCookieAdd(data){
         _this.addCookie(data.cookie);
@@ -145,7 +145,7 @@ var Background = (function (){
                 COOKIE.profiler.active = false;
             }
         })
-    }
+    };
 
     _this.addCookie = function(nameCookie) {
         chrome.cookies.set({"url": _currPageUrl, "name" : nameCookie, "value" : "1"}, function(cookie) {
@@ -156,11 +156,11 @@ var Background = (function (){
             }
             console.log('successfully add cookie' + cookie);
         })
-    }
+    };
 
     _this.getPluginState = function(){
         return COOKIE.debug.active;
-    }
+    };
 
     _this.activatePlugin = function(){
         _this.addCookie(COOKIE.debug.name);
@@ -173,11 +173,11 @@ var Background = (function (){
                 position : _currPosition
             }
         );
-    }
+    };
 
     _this.getCurrentUrl = function() {
         return _currPageUrl;
-    }
+    };
 
     _this.setPositionPlugin = function() {
         chrome.storage.local.get('bluzSites', function(responce){
@@ -197,11 +197,11 @@ var Background = (function (){
             }
 
         });
-    }
+    };
 
     _this.refreshPlugin = function(){
         updateCurrentTab();
-    }
+    };
 
 
     return _this;

@@ -6,11 +6,11 @@ var myApi = function (){
         Element.prototype.hasClass = function(className) {
             return this.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(this.className);
         };
-    }
+    };
 
     _this.get = function(idName) {
         return document.getElementById(idName);
-    }
+    };
 
 
     _this.setEventOnClass = function(eventName, className, callbackFunction) {
@@ -21,7 +21,7 @@ var myApi = function (){
                 node instanceof Node && node.addEventListener(eventName, callbackFunction);
             }
         }
-    },
+    };
     _this.isEmpty = function(obj) {
         if (obj == null) return true;
         if (obj.length && obj.length > 0)    return false;
@@ -32,8 +32,7 @@ var myApi = function (){
         }
 
         return true;
-    }
-
+    };
 
 
     _this.init();

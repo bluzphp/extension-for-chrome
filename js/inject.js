@@ -11,7 +11,7 @@ var Inject = (function (){
 	var _this		= {},
 		_views		= {},
 		_container	= null;
-	
+
 	// initialize ---------------------------------------------------------------
 	_this.init = function (){
         // listen to the Control Center (background.js) messages
@@ -22,8 +22,9 @@ var Inject = (function (){
         _container.setAttribute("id", ID.CONTAINER);
         _container.setAttribute("data-active", 0);
         _container.style.borderBottom = "1px solid #222";
-        document.body.appendChild(_container);
         _container.style.display = "none";
+
+        document.body.appendChild(_container);
 
 
         // add the "bluz" iframes
@@ -31,12 +32,11 @@ var Inject = (function (){
 
         // listen to the iframes/webpages message
         window.addEventListener("message", dom_onMessage, false);
-
     };
 
 
 	// private functions --------------------------------------------------------
-	function getView (id){
+	function getView (id) {
         var idFrame = ID.IFRAME_PREFIX+id;
         // return the view if it's already created
         if (_views[id]) return _views[id];
@@ -63,18 +63,18 @@ var Inject = (function (){
         _container.appendChild(iframe);
 
         return _views[id];
-	};
+	}
 
 
     function tell (message, data){
-        var data = data || {};
+        data = data || {};
 
         // send a message to "background.js"
         chrome.extension.sendRequest({
             message : message,
             data	: data
         });
-    };
+    }
 
     function processMessage (request){
 //        if (!request.message) return;
@@ -89,7 +89,7 @@ var Inject = (function (){
             case 'cookie-add': message_onCookieAdd(request.data); break;
             case 'cookie-remove': message_onCookieRemove(request.data); break;
         }
-    };
+    }
 
 
     // events -------------------------------------------------------------------
@@ -98,18 +98,18 @@ var Inject = (function (){
         if (!event.data.message) return;
 
         // tell another iframe a message
-        if (event.data.view){
+        if (event.data.view) {
             tell(event.data);
-        }else{
+        } else {
             processMessage(event.data);
         }
-    };
+    }
 
     // messages coming from "background.js"
-    function background_onMessage (request, sender, sendResponse){ //console.log('inject > ', request);
+    function background_onMessage (request, sender, sendResponse){
         if (request.data.view) return;
         processMessage(request);
-    };
+    }
 
     function addParamsToConsole(params){ //console.log(params);
         for (var val in params){
@@ -145,7 +145,7 @@ var Inject = (function (){
         if (allLoaded) {
             tell('all-iframes-loaded');
         }
-    };
+    }
 
     function message_onOpenPlugin(data) {
         if (data.cookie.debug.active) {
@@ -191,6 +191,7 @@ var Inject = (function (){
 
 	return _this;
 }());
+
 document.addEventListener("DOMContentLoaded", function (){
     Inject.init();
 }, false);

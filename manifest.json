@@ -1,7 +1,7 @@
 {
-    "name"				: "Bluz",
-    "version"			: "1.0",
-    "description"		: "Bluz plugin",
+    "name"				: "Bluz Toolbar",
+    "version"			: "1.0.1",
+    "description"		: "Plugin for PHP developers of Bluz framework https://github.com/bluzphp",
     "manifest_version"	: 2,
     "icons"				: {
         "128": "images/bluz-128.png",
@@ -10,7 +10,7 @@
         "16": "images/bluz-16.png"
     },
     "browser_action"	: {
-        "default_icon"	: "images/bluz-16.png",
+        "default_icon"	: "images/bluz-48.png",
         "default_popup": "html/popup.html"
     },
     "options_page": "html/options.html",
@@ -20,7 +20,7 @@
     "content_scripts"	: [{
         "matches"			: [ "http://*/*","https://*/*" ],
         "css"				: [ "css/inject.css" ],
-        "js"				: [  "js/inject.js" ],
+        "js"				: [ "js/inject.js" ],
         "run_at" 			: "document_start"
     }],
     "web_accessible_resources" : [

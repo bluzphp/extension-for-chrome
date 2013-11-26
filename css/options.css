@@ -1,34 +1,18 @@
-.panel-heading {
-    background-color: #101010 !important;
-    color: #fff !important;
-}
-
-.panel-default {
+.container {
     width: 600px;
-    margin-left: 25%;
+    margin: 32px auto;
 }
-
-#btn-reset {
-    float: right;
+.input-group > .input-group-addon {
+    width: 220px;
 }
-
+.input-group > .form-control {
+    width: 320px;
+}
 .panel-footer {
     font-size: 10px;
     text-align: center;
     height: 38px;
     color: #888;
-}
-
-.profile {
-    padding-right: 65px;
-}
-
-.details {
-    padding-right: 53px;
-}
-
-.header-bar {
-    padding-right: 81px;
 }
 
 #status {
