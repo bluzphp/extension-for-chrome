@@ -72,7 +72,7 @@ var Background = (function (){
     function onHeadersReceived(details){
         var headersParam = {
             consoleParam    : localStorage.headers_details || 'Bluz-Bar, Bluz-Notify',
-            pageParam       : localStorage.header_bar || 'Bluz-Debug'
+            pageParam       : localStorage.headers_bar || 'Bluz-Debug'
 
         };
 
