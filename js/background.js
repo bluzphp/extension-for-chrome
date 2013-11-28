@@ -4,7 +4,9 @@ var Background = (function (){
         _debugParams    = null,
         _barParams      = {},
         _currPageUrl    = null,
-        _currPosition   = null,
+        _currDomain     = null,
+        _websites       = [],
+        _arrPageParams  = [],
         a               = null,
         COOKIE          = {},
         regExprDomain   = new RegExp(/[a-zA-Z0-9](-*[a-zA-Z0-9]+)*(\.[a-zA-Z0-9](-*[a-zA-Z0-9]+)*)+/);
@@ -24,10 +26,13 @@ var Background = (function (){
 
         // manage when a user change tabs
         chrome.tabs.onActivated.addListener(onTabActivated);
+        chrome.tabs.onUpdated.addListener(changeStateBtn);
 
         // manage when a headers received
         chrome.webRequest.onHeadersReceived.addListener(onHeadersReceived,
             {urls: ["http://*/*"]},["responseHeaders"]);
+
+        chrome.browserAction.onClicked.addListener(onPopupClicked);
     };
 
     // private functions --------------------------------------------------------
@@ -43,13 +48,38 @@ var Background = (function (){
     function updateCurrentTab (){
         chrome.tabs.getSelected(null, function (tab){
             _currPageUrl = tab.url;
+
             if (_currPageUrl.match(new RegExp('https?'))) { // disable this action for url = chrome://extensions/
-                _this.setPositionPlugin();
+                changeStateBtn();
+                if (COOKIE.debug.active) {
+                    _currDomain = _currPageUrl.match(regExprDomain)[0];
+                    tellActivatePlugin();
+                } else {
+                    _this.tell('plugin-close');
+                }
             }
         })
 
     }
 
+    function changeStateBtn() {
+        chrome.cookies.get({"url": _currPageUrl, "name": COOKIE.debug.name}, function(cookie) {
+            COOKIE.debug.active = !a.isEmpty(cookie);
+        })
+
+        chrome.cookies.get({"url": _currPageUrl, "name": COOKIE.profiler.name}, function(cookie) {
+            COOKIE.profiler.active = !a.isEmpty(cookie);
+        })
+
+    }
+
+    function tellActivatePlugin(){
+        _this.tell(
+            'plugin-activate',
+            {view:'*', debugParams: _arrPageParams[_currPageUrl], cookie : COOKIE, barParams: _barParams || {}}
+        );
+        _barParams = {};
+    }
 
     // events -------------------------------------------------------------------
     function onPostMessage (request, sender, sendResponse){
@@ -80,6 +110,7 @@ var Background = (function (){
             details.responseHeaders.forEach(function(val){
                 if (val.name == headersParam.pageParam) {
                     _debugParams = val.value;
+                    _arrPageParams[details.url] = _debugParams;
                 }
 
                 if (headersParam.consoleParam.indexOf(val.name) > -1) {
@@ -94,15 +125,12 @@ var Background = (function (){
         }
     }
 
-    function changeStateBtn() {
-        chrome.cookies.get({"url": _currPageUrl, "name": COOKIE.debug.name}, function(cookie) {
-            COOKIE.debug.active = !a.isEmpty(cookie);
-        })
-
-        chrome.cookies.get({"url": _currPageUrl, "name": COOKIE.profiler.name}, function(cookie) {
-            COOKIE.profiler.active = !a.isEmpty(cookie);
-        })
-
+    function onPopupClicked(tab) {
+        if (typeof _websites[_currDomain] == 'undefined' || _websites[_currDomain].status == 'hide') {
+            _this.activatePlugin();
+        } else {
+            _this.removeCookie(COOKIE.debug.name);
+        }
     }
 
     // messages -----------------------------------------------------------------
@@ -118,7 +146,6 @@ var Background = (function (){
         _this.removeCookie(data.cookie);
 
     }
-
 
     // public functions ---------------------------------------------------------
     _this.tell = function (message, data){
@@ -138,6 +165,7 @@ var Background = (function (){
     _this.removeCookie = function(nameCookie) {
         chrome.cookies.remove({"url": _currPageUrl, "name" : nameCookie}, function(cookie) {
             console.log('successfuly remove cookie' + cookie);
+            _websites[_currDomain] = {status: 'hide'};
             if (nameCookie == COOKIE.debug.name) {
                 COOKIE.debug.active = false;
                 _this.tell('plugin-close');
@@ -148,7 +176,9 @@ var Background = (function (){
     };
 
     _this.addCookie = function(nameCookie) {
+        _this.removeCookie(nameCookie);
         chrome.cookies.set({"url": _currPageUrl, "name" : nameCookie, "value" : "1"}, function(cookie) {
+            _websites[_currDomain] = {status: 'show'};
             if (nameCookie == COOKIE.debug.name) {
                 COOKIE.debug.active = true;
             } else {
@@ -163,40 +193,14 @@ var Background = (function (){
     };
 
     _this.activatePlugin = function(){
-        _this.addCookie(COOKIE.debug.name);
-        _this.tell(
-            'plugin-activate',
-            {
-                view:'*',
-                debugParams: _debugParams,
-                cookie : COOKIE,
-                position : _currPosition
-            }
-        );
+        chrome.storage.local.set({'bluzSite': _websites}, function() {
+            _this.addCookie(COOKIE.debug.name);
+            tellActivatePlugin();
+        })
     };
 
     _this.getCurrentUrl = function() {
         return _currPageUrl;
-    };
-
-    _this.setPositionPlugin = function() {
-        chrome.storage.local.get('bluzSites', function(responce){
-            var domain = _currPageUrl.match(regExprDomain)[0];
-            _currPosition = "top";
-            if (responce.bluzSites[domain]){
-                _currPosition = responce.bluzSites[domain].position;
-            }
-
-            changeStateBtn();
-            if (COOKIE.debug.active) {
-                _this.tell(
-                    'plugin-activate',
-                    {view:'*', debugParams: _debugParams, cookie : COOKIE, position : _currPosition, barParams: _barParams}
-                );
-                _barParams = {};
-            }
-
-        });
     };
 
     _this.refreshPlugin = function(){

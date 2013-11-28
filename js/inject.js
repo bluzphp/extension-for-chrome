@@ -4,7 +4,7 @@ var Inject = (function (){
 		CONTAINER		: 'bluz-container',
 		IFRAME_PREFIX	: 'bluz-iframe-',
         IFRAME_DETAILS  : 'bluz-iframe-details',
-        IFRAME_PLUGIN  : 'bluz-iframe-bluz'
+        IFRAME_PLUGIN   : 'bluz-iframe-bluz'
 	};
 
 	// variables ----------------------------------------------------------------
@@ -83,8 +83,6 @@ var Inject = (function (){
             case 'iframe-loaded': message_onIframeLoaded(request.data); break;
             case 'open-plugin': message_onOpenPlugin(request.data); break;
             case 'open-details': message_onOpenDetails(request.data); break;
-            case 'details-activate': message_onDetailsActivate(request.data); break;
-            case 'details-close': message_onDetailsClose(request.data); break;
             case 'plugin-close': message_onPluginClose(); break;
             case 'cookie-add': message_onCookieAdd(request.data); break;
             case 'cookie-remove': message_onCookieRemove(request.data); break;
@@ -111,7 +109,7 @@ var Inject = (function (){
         processMessage(request);
     }
 
-    function addParamsToConsole(params){ //console.log(params);
+    function addParamsToConsole(params){
         for (var val in params){
             console.group(val);
             var param = JSON.parse(params[val]);
@@ -122,13 +120,6 @@ var Inject = (function (){
         }
     }
 
-    function setPosition(data){
-        if (typeof data.position == 'undefined' || data.position == 'top') {
-            _container.style.top = "0";
-        } else {
-            _container.style.bottom = "0";
-        }
-    }
 
 	// messages -----------------------------------------------------------------
     function message_onIframeLoaded (data){
@@ -149,28 +140,23 @@ var Inject = (function (){
 
     function message_onOpenPlugin(data) {
         if (data.cookie.debug.active) {
-            if (data.source == 'bluz') { // frames: 'bluz', 'details'
+            if (data.source == 'bluz' && typeof data.barParams != 'undefined') { // frames: 'bluz', 'details'
                 addParamsToConsole(data.barParams);
             }
 
             _container.removeAttribute('style');
-            setPosition(data);
+            _container.style.bottom = "0";
             _container.style.borderBottom = "1px solid #222";
             _container.style.display = 'block';
 
             document.getElementById(ID.IFRAME_PLUGIN).style.display = 'block';
-            tell('popup-debug-active');
         }
     }
 
-    function message_onOpenDetails(data) { //console.log(data);
+    function message_onOpenDetails(data) {
         if (data.source == 'bluz') {
             addParamsToConsole(data.barParams);
         }
-    }
-
-    function message_onDetailsActivate(data) {
-        tell('details-activate1');
     }
 
     function message_onCookieAdd(data) {
