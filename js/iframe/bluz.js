@@ -15,12 +15,11 @@ var Bluz = (function (){
     };
 
     // private functions ---------------------------------------------------------
-    function onMessage (request){ //console.log('bluz > ', request);
+    function onMessage (request){
         switch (request.message){
             case 'all-iframes-loaded': message_allIframesLoaded(request.data); break;
             case 'plugin-activate': message_pluginActivate(request.data); break;
             case 'cookie-add': message_cookieActivate(request.data); break;
-            case 'show-details': message_pluginDetails(request.data); break;
         }
     };
 
@@ -75,11 +74,6 @@ var Bluz = (function (){
 
         changeStateBtn(data);
         _iframe.tell('open-plugin', data);
-    };
-
-
-    function message_pluginDetails (data){
-        _iframe.tell('open-details', {view: '*', barParams: data.barParams});
     };
 
     return _this;
