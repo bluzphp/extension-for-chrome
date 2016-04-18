@@ -1,44 +1,48 @@
-var COOKIE = {
-    debug   : 'BLUZ_DEBUG',
-    profile : 'XDEBUG_PROFILE',
-    headers : 'Bluz-Bar, Bluz-Notify',
-    headers_bar: 'Bluz-Debug'
-};
-
+/**
+ * Alias for document.getElementById
+ * @param id
+ * @returns {Element}
+ */
 function get(id){
     return document.getElementById(id);
 }
 
+/**
+ * Save options to local chrome storage
+ */
 function save_options() {
-    localStorage["cookie_debug"] = get("cookie_debug").value;
-    localStorage["cookie_profile"] = get("cookie_profile").value;
-    localStorage["headers_details"] = get("headers_details").value;
-    localStorage["headers_bar"] = get("headers_bar").value;
-
-    // Update status to let user know options were saved.
-    var status = get("status");
-    status.innerHTML = "Options Saved.";
-    setTimeout(function() {
-        status.innerHTML = "";
-    }, 750);
+    chrome.storage.sync.set({
+        cookie_debug: get('cookie_debug').value,
+        cookie_profile: get('cookie_profile').value,
+        headers_bar: get('headers_bar').value,
+        headers_details: get('headers_details').value
+    }, function() {
+        // Update status to let user know options were saved.
+        var status = document.getElementById('save');
+        status.textContent = 'Options saved...';
+        setTimeout(function() {
+            status.textContent = 'Save';
+        }, 750);
+    });
 }
 
-
+/**
+ * Restore options from locale chrome storage
+ */
 function restore_options() {
-    get("cookie_debug").setAttribute('value', localStorage["cookie_debug"] || COOKIE.debug);
-    get("cookie_profile").setAttribute('value', localStorage["cookie_profile"] || COOKIE.profile);
-    get("headers_details").setAttribute('value', localStorage["headers_details"] || COOKIE.headers);
-    get("headers_bar").setAttribute('value', localStorage["headers_bar"] || COOKIE.headers_bar);
-}
-
-function reset_options() {
-    localStorage["cookie_debug"] = COOKIE.debug;
-    localStorage["cookie_profile"] = COOKIE.profile;
-    localStorage["headers_details"] = COOKIE.headers;
-    localStorage["headers_bar"] = COOKIE.headers_bar;
-    restore_options();
+    // Use default value color = 'red' and likesColor = true.
+    chrome.storage.sync.get({
+        cookie_debug: 'BLUZ_DEBUG',
+        cookie_profile: 'XDEBUG_PROFILE',
+        headers_bar: 'Bluz-Bar, Bluz-Notify',
+        headers_details: 'Bluz-Debug'
+    }, function(items) {
+        document.getElementById('cookie_debug').value = items.cookie_debug;
+        document.getElementById('cookie_profile').value = items.cookie_profile;
+        document.getElementById('headers_bar').value = items.headers_bar;
+        document.getElementById('headers_details').value = items.headers_details;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('btn-save').addEventListener('click', save_options);
-document.getElementById('btn-reset').addEventListener('click', reset_options);
+document.getElementById('save').addEventListener('click', save_options);

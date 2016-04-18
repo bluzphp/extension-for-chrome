@@ -1,49 +1,40 @@
-<html xmlns="http://www.w3.org/1999/html"><head>
-    <link rel="stylesheet" type="text/css" media="all" href="../css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" media="all" href="../css/options.css" />
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bluz Toolbar Options</title>
+    <style>
+        body {
+            padding: 10px;
+        }
+        label {
+            display: block;
+            overflow: hidden;
+            padding: 2px;
+        }
+        label input {
+            float:right;
+            width:180px
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Bluz Toolbar Options</h3>
-            </div>
-            <div class="panel-body">
-                <div class="form-group input-group">
-                    <span class="input-group-addon">Cookie Activate Plugin</span>
-                    <input type="text" id="cookie_debug" class="form-control" value=""
-                           placeholder="cookie name for activate toolbar" maxlength="255" required="">
-                </div>
-
-                <div class="form-group input-group">
-                    <span class="input-group-addon">Cookie XDebug Profiler</span>
-                    <input type="text" id="cookie_profile" class="form-control" value=""
-                           placeholder="param name for profile" maxlength="255" required="">
-                </div>
-
-                <div class="form-group input-group">
-                    <span class="input-group-addon">Header Bar</span>
-                    <input type="text" id="headers_bar" class="form-control" value=""
-                           placeholder="header bar" maxlength="255" required="">
-                </div>
-
-                <div class="form-group input-group">
-                    <span class="input-group-addon">Headers details</span>
-                    <input type="text" id="headers_details" class="form-control" value=""
-                           placeholder="parameters are separated by commas" maxlength="255" required="">
-                </div>
-
-
-                <input type="button" value="Save options" class="btn btn-primary" id="btn-save">
-                <span id="status"></span>
-                <input type="button" value="Reset options" class="btn pull-right" id="btn-reset">
-            </div>
-            <div class="panel-footer">
-                &copy; <a href="http://www.nixsolutions.com">NIX Solutions Ltd</a> 2013
-            </div>
-
-        </div>
-    </div>
-    <script type="text/javascript" src="/js/options.js"></script>
+<label>
+    Cookie Flag
+    <input type="text" id="cookie_debug" value="" placeholder="cookie name for activate toolbar" maxlength="255" required/>
+</label>
+<label>
+    XDebug Profiler
+    <input type="text" id="cookie_profile" value="" placeholder="cookie name for activate profiler" maxlength="255" required/>
+</label>
+<label>
+    Header Bar
+    <input type="text" id="headers_bar" value="" placeholder="" maxlength="255" required/>
+</label>
+<label>
+    Header Details
+    <input type="text" id="headers_details" value="" placeholder="" maxlength="255" required/>
+</label>
+<button id="save">Save</button>
+<script src="/js/options.js"></script>
 </body>
 </html>

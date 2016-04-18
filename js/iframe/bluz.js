@@ -21,8 +21,7 @@ var Bluz = (function (){
             case 'plugin-activate': message_pluginActivate(request.data); break;
             case 'cookie-add': message_cookieActivate(request.data); break;
         }
-    };
-
+    }
 
     function toggleCookie(el) {
         el = el.toElement;
@@ -66,7 +65,8 @@ var Bluz = (function (){
     }
 
     function message_pluginActivate (data){
-        var params = (data.debugParams !== null) ? (data.debugParams.replace(new RegExp(';', 'g'), '<span></span>')) : '';
+        var params;
+        params = (data.debugParams !== null) ? (data.debugParams.replace(new RegExp(';', 'g'), '<span></span>')) : '';
 
         a.get('bluzDebug').innerHTML = params;
         a.get('btnDebug').setAttribute('data-cookie', data.cookie.debug.name);
@@ -74,7 +74,7 @@ var Bluz = (function (){
 
         changeStateBtn(data);
         _iframe.tell('open-plugin', data);
-    };
+    }
 
     return _this;
 }());
