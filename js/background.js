@@ -10,7 +10,8 @@ var Background = (function (){
         a               = null,
         COOKIE          = {},
         regExprDomain   = new RegExp(/[a-zA-Z0-9](-*[a-zA-Z0-9]+)*(\.[a-zA-Z0-9](-*[a-zA-Z0-9]+)*)+/);
-
+    var ports = [];
+    var openCount = 0;
 
     // initialize ---------------------------------------------------------------
     _this.init = function (){
@@ -34,7 +35,6 @@ var Background = (function (){
 
         chrome.browserAction.onClicked.addListener(onPopupClicked);
 
-        var ports = [];
         chrome.runtime.onConnect.addListener(function(port) {
             if (port.name !== "devtools") return;
             ports.push(port);
@@ -44,23 +44,14 @@ var Background = (function (){
                 if (i !== -1) ports.splice(i, 1);
             });
             port.onMessage.addListener(function(msg) {
-              if (msg === 'cookie') {
-                //notifyDevtools(msg);
-              }
-              /*if (msg === 'debug') {
-                chrome.storage.sync.get(["debugText"], function(res) {
-                  console.log(res);
-                  notifyDevtools(res.debugText);
-                })
-              }*/
-              if (msg === 'logs') {
-                //notifyDevtools(msg);
-              }
               if (msg === 'btnDebug-addCookie') {
                 _this.addCookie(COOKIE.debug.name);
               }
               if (msg === 'btnDebug-removeCookie') {
                 _this.removeCookie(COOKIE.debug.name);
+                chrome.storage.syn.set({
+                  debugText: ''
+                })
               }
               if (msg === 'btnProfiler-addCookie') {
                 _this.addCookie(COOKIE.profiler.name);
@@ -68,14 +59,10 @@ var Background = (function (){
               if (msg === 'btnProfiler-removeCookie') {
                 _this.removeCookie(COOKIE.profiler.name);
               }
-              // Received message from devtools. Do something:
-              console.log('Received message from devtools page', msg);
             });
         });
 
-        var openCount = 0;
         chrome.runtime.onConnect.addListener(function (port) {
-          console.log(port);
             if (port.name == "devtools") {
               if (openCount == 0) {
                 console.log(_barParams);
@@ -147,7 +134,7 @@ var Background = (function (){
         })
     }
 
-    function changeStateBtn() {
+    function changeStateBtn(tabId, changeInfo, tab) {
         chrome.cookies.get({"url": _currPageUrl, "name": COOKIE.debug.name}, function(cookie) {
             COOKIE.debug.active = !a.isEmpty(cookie);
         })
@@ -155,6 +142,14 @@ var Background = (function (){
         chrome.cookies.get({"url": _currPageUrl, "name": COOKIE.profiler.name}, function(cookie) {
             COOKIE.profiler.active = !a.isEmpty(cookie);
         })
+
+        if (changeInfo) {
+          if (changeInfo.status === 'complete') {
+            ports.forEach(function(port) {
+                port.postMessage({message: 'reloadPage'});
+            });
+          }
+        }
     }
 
     function tellActivatePlugin(){
@@ -200,7 +195,6 @@ var Background = (function (){
 
                 if (headersParam.consoleParam.indexOf(val.name) > -1) {
                     _barParams[val.name] = val.value;
-                  console.log(headersParam.consoleParam.indexOf(val.name));
                 }
             });
 
@@ -298,43 +292,3 @@ var Background = (function (){
 }());
 
 window.addEventListener("load", function() { Background.init(); }, false);
-
-/*var ports = [];
-chrome.runtime.onConnect.addListener(function(port) {
-    console.log(port);
-    if (port.name !== "devtools") return;
-    ports.push(port);
-    // Remove port when destroyed (eg when devtools instance is closed)
-    port.onDisconnect.addListener(function() {
-        var i = ports.indexOf(port);
-        if (i !== -1) ports.splice(i, 1);
-    });
-    port.onMessage.addListener(function(msg) {
-        // Received message from devtools. Do something:
-        console.log('Received message from devtools page', msg);
-    });
-});
-
-// Function to send a message to all devtools.html views:
-function notifyDevtools(msg) {
-    ports.forEach(function(port) {
-        port.postMessage(msg);
-    });
-}
-
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  if (message.type == 'sendDebugText') {
-    chrome.storage.sync.set({
-      debugText: message.debugText
-    })
-  }
-})*/
-
-
-// Function to send a message to all devtools.html views:
-/*function notifyDevtools(msg) {
-    ports.forEach(function(port) {
-        port.postMessage(msg);
-    });
-}
-*/

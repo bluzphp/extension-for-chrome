@@ -11,15 +11,13 @@ function showDebug(msg, cookieDebug, cookieProfiler, barParams) {
   bluzLogs.style.display = 'none';
   if (cookieDebug) {
     btnDebug.setAttribute('class', 'btn btn-success');
+    btnDebug.innerHTML = 'ON';
   }
   if (cookieProfiler) {
     btnProfiler.setAttribute('class', 'btn btn-success');
+    btnProfiler.innerHTML = 'ON';
   }
   parseBarParams(barParams)
-  //var debugDivs = document.getElementById('bluzBar');
-  //var debugDiv = document.createElement('div');
-  //debugDiv.textContent = msg;
-  //debugDivs.appendChild(debugDiv);
 }
 //
 // var backgroundPageConnection = chrome.runtime.connect({
@@ -34,20 +32,20 @@ cookie.onclick = function() {
 };
 
 var debug = document.getElementsByClassName('debug')[0];
-debug.onclick = function() {
+debug.addEventListener('click', function() {
   pluginBox.style.display = 'none';
   bluzDetails.style.display = 'block';
   bluzLogs.style.display = 'none';
   respond ('debug')
-};
+});
 
 var logs = document.getElementsByClassName('logs')[0];
-logs.onclick = function() {
+logs.addEventListener('click', function() {
   pluginBox.style.display = 'none';
   bluzDetails.style.display = 'none';
   bluzLogs.style.display = 'block';
   respond ('logs')
-};
+});
 
 window.onload =  function() {
   chrome.storage.sync.get(["data"], function(res) {
@@ -115,4 +113,9 @@ function parseBarParams(barParams) {
       }
     }
   })
+}
+
+
+function reloadPage() {
+  location.reload();
 }

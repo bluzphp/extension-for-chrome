@@ -7,6 +7,10 @@ chrome.devtools.panels.create("Bluz debugger", "../images/bluz-64.png", "../html
   var barParams = '';
   var port = chrome.runtime.connect({name: 'devtools'});
   port.onMessage.addListener(function(msg) {
+      if (msg.message) {
+        _window.reloadPage();
+      }
+
       if (_window) {
           _window.showDebug(msg);
       } else {

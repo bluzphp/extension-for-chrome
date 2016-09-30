@@ -51,7 +51,7 @@ var Inject = (function (){
         iframe.style.width = "100%";
         iframe.style.height = "31px"; //(ID.IFRAME_DETAILS) ? '220px' : '31px';
         iframe.style.border = "0 none";
-        iframe.style.display = /*(idFrame == ID.IFRAME_DETAILS) ? 'none' : */'block';
+        iframe.style.display = /*(idFrame == ID.IFRAME_DETAILS) ? 'none' : 'block'*/ 'none';
 
         // view
         _views[id] = {
@@ -152,9 +152,9 @@ var Inject = (function (){
             _container.removeAttribute('style');
             _container.style.bottom = "0";
             _container.style.borderBottom = "1px solid #222";
-            _container.style.display = 'block';
+            _container.style.display = /*'block'*/ 'none';
 
-            document.getElementById(ID.IFRAME_PLUGIN).style.display = 'block';
+            document.getElementById(ID.IFRAME_PLUGIN).style.display = /*'block'*/ 'none';
 						chrome.storage.sync.set({
 		          data: data.debugParams
 		        })
