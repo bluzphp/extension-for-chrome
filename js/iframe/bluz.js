@@ -73,11 +73,12 @@ var Bluz = (function (){
         a.get('btnProfiler').setAttribute('data-cookie', data.cookie.profiler.name);
 
         changeStateBtn(data);
+        console.log(data);
         _iframe.tell('open-plugin', data);
     }
 
     return _this;
 }());
 
-document.addEventListener("DOMContentLoaded", function (){ new Bluz.init(); }, false);
-
+document.addEventListener("DOMContentLoaded", function (){
+  new Bluz.init(); }, false);

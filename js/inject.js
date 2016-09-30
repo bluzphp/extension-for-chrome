@@ -51,7 +51,7 @@ var Inject = (function (){
         iframe.style.width = "100%";
         iframe.style.height = "31px"; //(ID.IFRAME_DETAILS) ? '220px' : '31px';
         iframe.style.border = "0 none";
-        iframe.style.display = (idFrame == ID.IFRAME_DETAILS) ? 'none' : 'block';
+        iframe.style.display = /*(idFrame == ID.IFRAME_DETAILS) ? 'none' : */'block';
 
         // view
         _views[id] = {
@@ -105,11 +105,15 @@ var Inject = (function (){
 
     // messages coming from "background.js"
     function background_onMessage (request, sender, sendResponse){
-        if (request.data.view) return;
+			console.log(request);
+        //if (request.data.view) return;
         processMessage(request);
     }
 
     function addParamsToConsole(params){
+			chrome.storage.sync.set({
+				barParams: params
+			})
         for (var val in params){
             console.group(val);
             var param = JSON.parse(params[val]);
@@ -139,6 +143,7 @@ var Inject = (function (){
     }
 
     function message_onOpenPlugin(data) {
+			console.log(data);
         if (data.cookie.debug.active) {
             if (data.source == 'bluz' && typeof data.barParams != 'undefined') { // frames: 'bluz', 'details'
                 addParamsToConsole(data.barParams);
@@ -150,6 +155,9 @@ var Inject = (function (){
             _container.style.display = 'block';
 
             document.getElementById(ID.IFRAME_PLUGIN).style.display = 'block';
+						chrome.storage.sync.set({
+		          data: data.debugParams
+		        })
         }
     }
 
@@ -179,6 +187,5 @@ var Inject = (function (){
 }());
 
 document.addEventListener("DOMContentLoaded", function (){
-    Inject.init();
+		Inject.init();
 }, false);
-

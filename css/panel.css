@@ -1,0 +1,97 @@
+.bluz-details {
+  padding: 10px;
+  white-space: pre;
+  font-size: 16px;
+}
+
+#bluzBar div {
+  padding: 10px;
+  border-bottom: 1px solid #000000;
+}
+
+.devTools {
+  width: 100%;
+  display: table;
+  height: 100%;
+}
+
+.devTools__item {
+  display: table-cell;
+  position: relative;
+  vertical-align: top;
+}
+
+.devToolsMenu {
+  width: 15%;
+  background-color: #303641;
+  margin-top: 60px;
+}
+
+.devToolsContent__header {
+  padding-top: 10px;
+  background-color: #dbdbdb;
+  border-bottom: 1px solid #000000;
+  min-height: 41px;
+}
+
+.navigation__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.navigation__item {
+    border-top: 1px solid rgba(69, 74, 84, 0.4);
+}
+.navigation__item:first-child {
+    border-top: none;
+}
+
+.nav-links {
+    display: block;
+    position: relative;
+    padding: 10px 15px;
+    color: #aaabae;
+    background-color: #303641;
+    transition: 250ms color ease-in-out, 250ms background-color ease-in-out;
+}
+
+.nav-links:hover,
+.nav-links:active,
+.nav-links:focus  {
+    color: #fff;
+    background-color: rgba(69, 74, 84, 0.3);
+    text-decoration: none;
+}
+
+li {
+  border-bottom: 1px solid #000000;
+}
+
+.devToolsContent__header span {
+  margin-left: 20px;
+  line-height: inherit;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+.inner {
+  padding: 25px;
+}
+
+.btn-group {
+  border: 1px solid #000000;
+  border-radius: 5px;
+}
+
+.btn-margin-left {
+  margin-left: 35px;
+}
+
+.bluz-plugin.bluz-logs {
+  display: none;
+}
+
+.table.table-hover {
+  table-layout: fixed;
+}
