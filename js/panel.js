@@ -5,30 +5,19 @@ var bluzLogs = document.getElementsByClassName('bluz-logs')[0];
 var pluginBox = document.getElementById('pluginBox');
 var logsTable = document.getElementById('logsTable');
 
-function showDebug(msg, cookieDebug, cookieProfiler, barParams) {
+function showDebug(msg) {
   bluzDetails.textContent = msg;
   bluzDetails.style.display = 'none';
   bluzLogs.style.display = 'none';
-  if (cookieDebug) {
-    btnDebug.setAttribute('class', 'btn btn-success');
-    btnDebug.innerHTML = 'ON';
-  }
-  if (cookieProfiler) {
-    btnProfiler.setAttribute('class', 'btn btn-success');
-    btnProfiler.innerHTML = 'ON';
-  }
-  parseBarParams(barParams)
+  parseBarParams()
 }
-//
-// var backgroundPageConnection = chrome.runtime.connect({
-//     name: "devtools-page"
-// });
+
 var cookie = document.getElementsByClassName('cookie')[0];
 cookie.onclick = function() {
   pluginBox.style.display = 'block';
   bluzDetails.style.display = 'none';
   bluzLogs.style.display = 'none';
-  respond ('cookie')
+  respond('cookie')
 };
 
 var debug = document.getElementsByClassName('debug')[0];
@@ -36,7 +25,7 @@ debug.addEventListener('click', function() {
   pluginBox.style.display = 'none';
   bluzDetails.style.display = 'block';
   bluzLogs.style.display = 'none';
-  respond ('debug')
+  respond('debug')
 });
 
 var logs = document.getElementsByClassName('logs')[0];
@@ -44,11 +33,11 @@ logs.addEventListener('click', function() {
   pluginBox.style.display = 'none';
   bluzDetails.style.display = 'none';
   bluzLogs.style.display = 'block';
-  respond ('logs')
+  respond('logs')
 });
 
 window.onload =  function() {
-  chrome.storage.sync.get(["data"], function(res) {
+  chrome.storage.sync.get(["data", "debug", "profiler"], function(res) {
     var devToolsContent__header = document.getElementsByClassName('devToolsContent__header')[0];
     var arrData = res.data.split('; ');
     arrData.forEach(function(item) {
@@ -56,7 +45,16 @@ window.onload =  function() {
       span.textContent = item;
       devToolsContent__header.appendChild(span);
     });
+    if (res.debug) {
+      btnDebug.setAttribute('class', 'btn btn-success');
+      btnDebug.innerHTML = 'ON';
+    }
+    if (res.profiler) {
+      btnProfiler.setAttribute('class', 'btn btn-success');
+      btnProfiler.innerHTML = 'ON';
+    }
   })
+  parseBarParams()
 };
 
 btnDebug.addEventListener('click', function(el) {
@@ -64,11 +62,11 @@ btnDebug.addEventListener('click', function(el) {
   if (el.className === 'btn btn-danger') {
     el.setAttribute('class', 'btn btn-success');
     el.innerHTML = 'ON';
-    respond ('btnDebug-addCookie')
+    respond('btnDebug-addCookie')
   } else {
     el.setAttribute('class', 'btn btn-danger');
     el.innerHTML = 'OFF';
-    respond ('btnDebug-removeCookie')
+    respond('btnDebug-removeCookie')
   }
 });
 
@@ -77,15 +75,15 @@ btnProfiler.addEventListener('click', function(el) {
   if (el.className === 'btn btn-danger') {
     el.setAttribute('class', 'btn btn-success');
     el.innerHTML = 'ON';
-    respond ('btnProfiler-addCookie')
+    respond('btnProfiler-addCookie')
   } else {
     el.setAttribute('class', 'btn btn-danger');
     el.innerHTML = 'OFF';
-    respond ('btnProfiler-removeCookie')
+    respond('btnProfiler-removeCookie')
   }
 });
 
-function parseBarParams(barParams) {
+function parseBarParams() {
   var logsTable = document.getElementById('logsTable');
   chrome.storage.sync.get(['barParams'], function(res) {
     for (var val in res.barParams){
@@ -115,7 +113,11 @@ function parseBarParams(barParams) {
   })
 }
 
-
 function reloadPage() {
   location.reload();
+}
+
+function respond(msg) {
+  var port = chrome.runtime.connect({name: 'devtools'});
+  port.postMessage(msg);
 }

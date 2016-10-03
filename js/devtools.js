@@ -2,9 +2,6 @@ chrome.devtools.panels.create("Bluz debugger", "../images/bluz-64.png", "../html
   var _window;
 
   var data = [];
-  var cookieDebug = '';
-  var cookieProfiler = '';
-  var barParams = '';
   var port = chrome.runtime.connect({name: 'devtools'});
   port.onMessage.addListener(function(msg) {
       if (msg.message) {
@@ -16,9 +13,6 @@ chrome.devtools.panels.create("Bluz debugger", "../images/bluz-64.png", "../html
       } else {
           //data = msg;
           data.push(msg.debugText);
-          cookieDebug = msg.debug;
-          cookieProfiler = msg.profiler;
-          barParams = msg.barParams['Bluz-Bar'];
       }
   });
 
@@ -28,11 +22,7 @@ chrome.devtools.panels.create("Bluz debugger", "../images/bluz-64.png", "../html
 
       var msg;
       while (msg = data.shift()) {
-        _window.showDebug(msg, cookieDebug, cookieProfiler, barParams);
+        _window.showDebug(msg);
       }
-
-      _window.respond = function(msg) {
-          port.postMessage(msg);
-      };
   });
 })

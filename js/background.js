@@ -49,7 +49,7 @@ var Background = (function (){
               }
               if (msg === 'btnDebug-removeCookie') {
                 _this.removeCookie(COOKIE.debug.name);
-                chrome.storage.syn.set({
+                chrome.storage.sync.set({
                   debugText: ''
                 })
               }
@@ -248,9 +248,15 @@ var Background = (function (){
             _websites[_currDomain] = {status: 'hide'};
             if (nameCookie == COOKIE.debug.name) {
                 COOKIE.debug.active = false;
+                chrome.storage.sync.set({
+                  debug: false
+                })
                 _this.tell('plugin-close');
             } else {
                 COOKIE.profiler.active = false;
+                chrome.storage.sync.set({
+                  profiler: false
+                })
             }
         })
     };
@@ -261,8 +267,14 @@ var Background = (function (){
             _websites[_currDomain] = {status: 'show'};
             if (nameCookie == COOKIE.debug.name) {
                 COOKIE.debug.active = true;
+                chrome.storage.sync.set({
+                  debug: true
+                })
             } else {
                 COOKIE.profiler.active = true;
+                chrome.storage.sync.set({
+                  profiler: true
+                })
             }
             console.log('successfully add cookie' + cookie);
         })
