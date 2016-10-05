@@ -6,38 +6,38 @@ var pluginBox = document.getElementById('pluginBox');
 var logsTable = document.getElementById('logsTable');
 
 function showDebug(msg) {
-  bluzDetails.textContent = msg;
-  bluzDetails.style.display = 'none';
-  bluzLogs.style.display = 'none';
-  parseBarParams()
+  /*bluzDetails.textContent = msg;
+  showInfo('cookie')
+  parseBarParams()*/
 }
 
 var cookie = document.getElementsByClassName('cookie')[0];
 cookie.onclick = function() {
-  pluginBox.style.display = 'block';
-  bluzDetails.style.display = 'none';
-  bluzLogs.style.display = 'none';
-  respond('cookie')
+  showInfo('cookie')
+  chrome.storage.sync.set({
+    isChecked: 'cookie'
+  })
 };
 
 var debug = document.getElementsByClassName('debug')[0];
 debug.addEventListener('click', function() {
-  pluginBox.style.display = 'none';
-  bluzDetails.style.display = 'block';
-  bluzLogs.style.display = 'none';
-  respond('debug')
+  showInfo('debug')
+  chrome.storage.sync.set({
+    isChecked: 'debug'
+  })
 });
 
 var logs = document.getElementsByClassName('logs')[0];
 logs.addEventListener('click', function() {
-  pluginBox.style.display = 'none';
-  bluzDetails.style.display = 'none';
-  bluzLogs.style.display = 'block';
-  respond('logs')
+  showInfo('logs')
+  chrome.storage.sync.set({
+    isChecked: 'logs'
+  })
 });
 
 window.onload =  function() {
-  chrome.storage.sync.get(["data", "debug", "profiler"], function(res) {
+  chrome.storage.sync.get(["data", "debug", "profiler", "debugText", "isChecked"], function(res) {
+    bluzDetails.textContent = res.debugText;
     var devToolsContent__header = document.getElementsByClassName('devToolsContent__header')[0];
     var arrData = res.data.split('; ');
     arrData.forEach(function(item) {
@@ -52,6 +52,20 @@ window.onload =  function() {
     if (res.profiler) {
       btnProfiler.setAttribute('class', 'btn btn-success');
       btnProfiler.innerHTML = 'ON';
+    }
+
+    switch(res.isChecked) {
+      case 'cookie':
+        showInfo('cookie')
+        break;
+      case 'debug':
+        showInfo('debug')
+        break;
+      case 'logs':
+        showInfo('logs')
+        break;
+      default:
+        showInfo('cookie')
     }
   })
   parseBarParams()
@@ -120,4 +134,22 @@ function reloadPage() {
 function respond(msg) {
   var port = chrome.runtime.connect({name: 'devtools'});
   port.postMessage(msg);
+}
+
+function showInfo (info) {
+  if (info === 'cookie') {
+    pluginBox.style.display = 'block';
+    bluzDetails.style.display = 'none';
+    bluzLogs.style.display = 'none';
+  }
+  if (info === 'debug') {
+    pluginBox.style.display = 'none';
+    bluzDetails.style.display = 'block';
+    bluzLogs.style.display = 'none';
+  }
+  if (info === 'logs') {
+    pluginBox.style.display = 'none';
+    bluzDetails.style.display = 'none';
+    bluzLogs.style.display = 'block';
+  }
 }

@@ -105,7 +105,6 @@ var Inject = (function (){
 
     // messages coming from "background.js"
     function background_onMessage (request, sender, sendResponse){
-			console.log(request);
         //if (request.data.view) return;
         processMessage(request);
     }
@@ -114,47 +113,46 @@ var Inject = (function (){
 			chrome.storage.sync.set({
 				barParams: params
 			})
-        for (var val in params){
+        /*for (var val in params){
             console.group(val);
             var param = JSON.parse(params[val]);
             for ( var i in param) {
                 console.log(i, param[i]);
             }
             console.groupEnd();
-        }
+        }*/
     }
 
 
 	// messages -----------------------------------------------------------------
     function message_onIframeLoaded (data){
-        var view 		= getView(data.source),
-            allLoaded	= true;
-
-        view.isLoaded = true;
-
-        for (var i in _views){
-            if (_views[i].isLoaded === false) allLoaded = false;
-        }
-
-        // tell "background.js" that all the frames are loaded
-        if (allLoaded) {
-            tell('all-iframes-loaded');
-        }
+        // var view 		= getView(data.source),
+        //     allLoaded	= true;
+				//
+        // view.isLoaded = true;
+				//
+        // for (var i in _views){
+        //     if (_views[i].isLoaded === false) allLoaded = false;
+        // }
+				//
+        // // tell "background.js" that all the frames are loaded
+        // if (allLoaded) {
+        //     tell('all-iframes-loaded');
+        // }
+        tell('all-iframes-loaded');
     }
 
     function message_onOpenPlugin(data) {
-			console.log(data);
         if (data.cookie.debug.active) {
             if (data.source == 'bluz' && typeof data.barParams != 'undefined') { // frames: 'bluz', 'details'
                 addParamsToConsole(data.barParams);
             }
-
-            _container.removeAttribute('style');
-            _container.style.bottom = "0";
-            _container.style.borderBottom = "1px solid #222";
-            _container.style.display = /*'block'*/ 'none';
-
-            document.getElementById(ID.IFRAME_PLUGIN).style.display = /*'block'*/ 'none';
+            // _container.removeAttribute('style');
+            // _container.style.bottom = "0";
+            // _container.style.borderBottom = "1px solid #222";
+            // _container.style.display = /*'block'*/ 'none';
+						//
+            // document.getElementById(ID.IFRAME_PLUGIN).style.display = /*'block'*/ 'none';
 						chrome.storage.sync.set({
 		          data: data.debugParams
 		        })

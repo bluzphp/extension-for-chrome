@@ -1,5 +1,5 @@
 (function (){
-  var debugPre = document.getElementsByTagName('pre');
+  var debugPre = document.getElementsByClassName('bluz-debug');
   if (debugPre) {
     var debugText = [];
     for (key in debugPre) {
@@ -10,7 +10,7 @@
         }
       }
       if (typeof debugPre[key] === 'object') {
-        //debugPre[key].style.display = 'none';
+        debugPre[key].style.display = 'none';
       }
     }
 

@@ -35,65 +35,9 @@ var Background = (function (){
 
         chrome.browserAction.onClicked.addListener(onPopupClicked);
 
-        chrome.runtime.onConnect.addListener(function(port) {
-            if (port.name !== "devtools") return;
-            ports.push(port);
-            // Remove port when destroyed (eg when devtools instance is closed)
-            port.onDisconnect.addListener(function() {
-                var i = ports.indexOf(port);
-                if (i !== -1) ports.splice(i, 1);
-            });
-            port.onMessage.addListener(function(msg) {
-              if (msg === 'btnDebug-addCookie') {
-                _this.addCookie(COOKIE.debug.name);
-              }
-              if (msg === 'btnDebug-removeCookie') {
-                _this.removeCookie(COOKIE.debug.name);
-                chrome.storage.sync.set({
-                  debugText: ''
-                })
-              }
-              if (msg === 'btnProfiler-addCookie') {
-                _this.addCookie(COOKIE.profiler.name);
-              }
-              if (msg === 'btnProfiler-removeCookie') {
-                _this.removeCookie(COOKIE.profiler.name);
-              }
-            });
-        });
+        chrome.runtime.onConnect.addListener(onDevToolsMessages);
 
-        chrome.runtime.onConnect.addListener(function (port) {
-            if (port.name == "devtools") {
-              if (openCount == 0) {
-                console.log(_barParams);
-                chrome.storage.sync.get(["debugText"], function(res) {
-                  //if (res.debugText[0]) {
-                    ports.forEach(function(port) {
-                        port.postMessage({
-                          debugText: res.debugText,
-                          debug: COOKIE.debug.active,
-                          profiler: COOKIE.profiler.active,
-                          barParams: _barParams
-                        });
-                    });
-                  /*} else {
-                    ports.forEach(function(port) {
-                      res.debugText[0] = 'Sorry, debug files not found!';
-                        port.postMessage(res.debugText);
-                    });
-                  }*/
-                })
-              }
-              openCount++;
-
-              port.onDisconnect.addListener(function(port) {
-                  openCount--;
-                  if (openCount == 0) {
-                    console.log("Last DevTools window closing.");
-                  }
-              });
-            }
-        });
+        chrome.runtime.onConnect.addListener(onDevToolsOpen);
     };
 
     // private functions --------------------------------------------------------
@@ -153,7 +97,6 @@ var Background = (function (){
     }
 
     function tellActivatePlugin(){
-      console.log(_barParams);
         _this.tell(
             'plugin-activate',
             {view:'*', debugParams: _arrPageParams[_currPageUrl], cookie : COOKIE, barParams: _barParams || {}}
@@ -211,6 +154,61 @@ var Background = (function (){
         } else {
             _this.removeCookie(COOKIE.debug.name);
         }
+    }
+
+    function onDevToolsMessages(port) {
+      if (port.name !== "devtools") return;
+      ports.push(port);
+      // Remove port when destroyed (eg when devtools instance is closed)
+      port.onDisconnect.addListener(function() {
+          var i = ports.indexOf(port);
+          if (i !== -1) ports.splice(i, 1);
+      });
+      port.onMessage.addListener(function(msg) {
+        if (msg === 'btnDebug-addCookie') {
+          _this.addCookie(COOKIE.debug.name);
+        }
+        if (msg === 'btnDebug-removeCookie') {
+          _this.removeCookie(COOKIE.debug.name);
+          chrome.storage.sync.set({
+            debugText: '',
+            barParams: ''
+          })
+        }
+        if (msg === 'btnProfiler-addCookie') {
+          _this.addCookie(COOKIE.profiler.name);
+        }
+        if (msg === 'btnProfiler-removeCookie') {
+          _this.removeCookie(COOKIE.profiler.name);
+        }
+      });
+    }
+
+    function onDevToolsOpen(port) {
+      if (port.name == "devtools") {
+        if (openCount == 0) {
+          chrome.storage.sync.get(["debugText"], function(res) {
+              ports.forEach(function(port) {
+                  port.postMessage({
+                    debugText: res.debugText,
+                    debug: COOKIE.debug.active,
+                    profiler: COOKIE.profiler.active,
+                    barParams: _barParams
+                  });
+              });
+          })
+        }
+        openCount++;
+
+        port.onDisconnect.addListener(function(port) {
+            openCount--;
+            if (openCount == 0) {
+              chrome.storage.sync.set({
+                isChecked: ''
+              })
+            }
+        });
+      }
     }
 
     // messages -----------------------------------------------------------------

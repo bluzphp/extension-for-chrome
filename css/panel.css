@@ -88,10 +88,12 @@ li {
   margin-left: 35px;
 }
 
-.bluz-plugin.bluz-logs {
-  display: none;
-}
-
 .table.table-hover {
   table-layout: fixed;
+}
+
+.bluz-plugin.bluz-details,
+.bluz-plugin.bluz-logs,
+#pluginBox {
+  display: none;
 }

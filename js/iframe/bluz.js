@@ -73,7 +73,6 @@ var Bluz = (function (){
         a.get('btnProfiler').setAttribute('data-cookie', data.cookie.profiler.name);
 
         changeStateBtn(data);
-        console.log(data);
         _iframe.tell('open-plugin', data);
     }
 
