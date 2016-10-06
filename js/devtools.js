@@ -11,7 +11,6 @@ chrome.devtools.panels.create("Bluz debugger", "../images/bluz-64.png", "../html
       if (_window) {
           _window.showDebug(msg);
       } else {
-          //data = msg;
           data.push(msg.debugText);
       }
   });

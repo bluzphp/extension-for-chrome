@@ -1,5 +1,7 @@
 var btnDebug = document.getElementById('btnDebug');
+var switchDebug = document.getElementsByClassName('switchDebug')[0];
 var btnProfiler = document.getElementById('btnProfiler');
+var switchProfiler = document.getElementsByClassName('switchProfiler')[0];
 var bluzDetails = document.getElementsByClassName('bluz-details')[0];
 var bluzLogs = document.getElementsByClassName('bluz-logs')[0];
 var pluginBox = document.getElementById('pluginBox');
@@ -46,12 +48,12 @@ window.onload =  function() {
       devToolsContent__header.appendChild(span);
     });
     if (res.debug) {
-      btnDebug.setAttribute('class', 'btn btn-success');
-      btnDebug.innerHTML = 'ON';
+      btnDebug.checked = true;
+      switchDebug.setAttribute('class', 'switch switchDebug switch-on');
     }
     if (res.profiler) {
-      btnProfiler.setAttribute('class', 'btn btn-success');
-      btnProfiler.innerHTML = 'ON';
+      btnProfiler.checked = true;
+      switchProfiler.setAttribute('class', 'switch switchProfiler switch-on');
     }
 
     switch(res.isChecked) {
@@ -73,26 +75,22 @@ window.onload =  function() {
 
 btnDebug.addEventListener('click', function(el) {
   el = el.toElement;
-  if (el.className === 'btn btn-danger') {
-    el.setAttribute('class', 'btn btn-success');
-    el.innerHTML = 'ON';
+  if (el.checked) {
+    switchDebug.setAttribute('class', 'switch switch--animate switchDebug switch-on');
     respond('btnDebug-addCookie')
   } else {
-    el.setAttribute('class', 'btn btn-danger');
-    el.innerHTML = 'OFF';
+    switchDebug.setAttribute('class', 'switch switch--animate switchDebug switch-off');
     respond('btnDebug-removeCookie')
   }
 });
 
 btnProfiler.addEventListener('click', function(el) {
   el = el.toElement;
-  if (el.className === 'btn btn-danger') {
-    el.setAttribute('class', 'btn btn-success');
-    el.innerHTML = 'ON';
+  if (el.checked) {
+    switchProfiler.setAttribute('class', 'switch switch--animate switchProfiler switch-on');
     respond('btnProfiler-addCookie')
   } else {
-    el.setAttribute('class', 'btn btn-danger');
-    el.innerHTML = 'OFF';
+    switchProfiler.setAttribute('class', 'switch switch--animate switchProfiler switch-off');
     respond('btnProfiler-removeCookie')
   }
 });

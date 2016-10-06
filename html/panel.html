@@ -24,14 +24,22 @@
             <div class="devToolsContent__header"></div>
             <div id="pluginBox" class="bluz-plugin">
                 <div class="inner">
-                    <div class="btn-group" data-toggle="buttons-checkbox">
-                        <button type="button" class="btn btn-title">Debug</button>
-                        <button type="button" class="btn btn-danger" id="btnDebug" data-cookie="">Off</button>
+                    <label class="make-switch switch--large has-switch" for="btnDebug">
+                    <input type="checkbox" class="checkbox--hidden" id="btnDebug">
+                    <div class="switch switchDebug switch-off">
+                        <span class="switch__span switch--left switch--large">on</span>
+                        <span class="switch__label switch--large">Debug</span>
+                        <span class="switch__span switch--right switch--large">off</span>
                     </div>
-                    <div class="btn-group btn-margin-left" data-toggle="buttons-checkbox">
-                        <button type="button" class="btn btn-title">Profiler</button>
-                        <button type="button" class="btn btn-danger" id="btnProfiler" data-cookie="">Off</button>
-                    </div>
+                  </label>
+                  <label class="make-switch switch--large has-switch" for="btnProfiler">
+                  <input type="checkbox" class="checkbox--hidden" id="btnProfiler">
+                  <div class="switch switchProfiler switch-off">
+                      <span class="switch__span switch--left switch--large">on</span>
+                      <span class="switch__label switch--large">Profiler</span>
+                      <span class="switch__span switch--right switch--large">off</span>
+                  </div>
+                </label>
                 </div>
             </div>
             <div class="bluz-plugin bluz-details"></div>
