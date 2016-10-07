@@ -21,7 +21,6 @@ var Inject = (function (){
         _container = document.createElement("div");
         _container.setAttribute("id", ID.CONTAINER);
         _container.setAttribute("data-active", 0);
-        _container.style.borderBottom = "1px solid #222";
         _container.style.display = "none";
 
         document.body.appendChild(_container);
@@ -49,9 +48,9 @@ var Inject = (function (){
         iframe.setAttribute("src", src);
         iframe.setAttribute('scrolling', false);
         iframe.style.width = "100%";
-        iframe.style.height = "31px"; //(ID.IFRAME_DETAILS) ? '220px' : '31px';
+        iframe.style.height = "31px";
         iframe.style.border = "0 none";
-        iframe.style.display = /*(idFrame == ID.IFRAME_DETAILS) ? 'none' : 'block'*/ 'none';
+        iframe.style.display = 'none';
 
         // view
         _views[id] = {
@@ -113,32 +112,11 @@ var Inject = (function (){
 			chrome.storage.sync.set({
 				barParams: params
 			})
-        /*for (var val in params){
-            console.group(val);
-            var param = JSON.parse(params[val]);
-            for ( var i in param) {
-                console.log(i, param[i]);
-            }
-            console.groupEnd();
-        }*/
     }
 
 
 	// messages -----------------------------------------------------------------
     function message_onIframeLoaded (data){
-        // var view 		= getView(data.source),
-        //     allLoaded	= true;
-				//
-        // view.isLoaded = true;
-				//
-        // for (var i in _views){
-        //     if (_views[i].isLoaded === false) allLoaded = false;
-        // }
-				//
-        // // tell "background.js" that all the frames are loaded
-        // if (allLoaded) {
-        //     tell('all-iframes-loaded');
-        // }
         tell('all-iframes-loaded');
     }
 
@@ -147,12 +125,6 @@ var Inject = (function (){
             if (data.source == 'bluz' && typeof data.barParams != 'undefined') { // frames: 'bluz', 'details'
                 addParamsToConsole(data.barParams);
             }
-            // _container.removeAttribute('style');
-            // _container.style.bottom = "0";
-            // _container.style.borderBottom = "1px solid #222";
-            // _container.style.display = /*'block'*/ 'none';
-						//
-            // document.getElementById(ID.IFRAME_PLUGIN).style.display = /*'block'*/ 'none';
 						chrome.storage.sync.set({
 		          data: data.debugParams
 		        })

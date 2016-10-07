@@ -1,4 +1,4 @@
-chrome.devtools.panels.create("Bluz debugger", "../images/bluz-64.png", "../html/panel.html", (extensionPanel) => {
+chrome.devtools.panels.create("Bluz debugger", "../images/bluz-64.png", "../html/panel.html", function (extensionPanel) {
   var _window;
 
   var data = [];

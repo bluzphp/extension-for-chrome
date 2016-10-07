@@ -1,7 +1,7 @@
 .bluz-details {
   padding: 10px;
-  white-space: pre;
   font-size: 16px;
+  white-space: pre;
 }
 
 #bluzBar div {
@@ -10,8 +10,8 @@
 }
 
 .devTools {
-  width: 100%;
   display: table;
+  width: 100%;
   height: 100%;
 }
 
@@ -23,15 +23,15 @@
 
 .devToolsMenu {
   width: 15%;
-  background-color: #303641;
   margin-top: 60px;
+  background-color: #303641;
 }
 
 .devToolsContent__header {
-  padding-top: 10px;
-  background-color: #dbdbdb;
-  border-bottom: 1px solid #000000;
   min-height: 41px;
+  padding-top: 10px;
+  border-bottom: 1px solid #000000;
+  background-color: #dbdbdb;
 }
 
 .navigation__list {
