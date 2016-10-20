@@ -19,10 +19,11 @@
     "background"		: {
         "page"			: "html/background.html"
     },
+    "devtools_page": "html/devtools.html",
     "content_scripts"	: [{
         "matches"			: [ "http://*/*","https://*/*" ],
-        "css"				: [ "css/inject.css" ],
-        "js"				: [ "js/inject.js" ],
+        "css"				  : [],
+        "js"				  : [ "js/inject.js"],
         "run_at" 			: "document_start"
     }],
     "web_accessible_resources" : [

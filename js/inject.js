@@ -21,7 +21,6 @@ var Inject = (function (){
         _container = document.createElement("div");
         _container.setAttribute("id", ID.CONTAINER);
         _container.setAttribute("data-active", 0);
-        _container.style.borderBottom = "1px solid #222";
         _container.style.display = "none";
 
         document.body.appendChild(_container);
@@ -49,9 +48,9 @@ var Inject = (function (){
         iframe.setAttribute("src", src);
         iframe.setAttribute('scrolling', false);
         iframe.style.width = "100%";
-        iframe.style.height = "31px"; //(ID.IFRAME_DETAILS) ? '220px' : '31px';
+        iframe.style.height = "31px";
         iframe.style.border = "0 none";
-        iframe.style.display = (idFrame == ID.IFRAME_DETAILS) ? 'none' : 'block';
+        iframe.style.display = 'none';
 
         // view
         _views[id] = {
@@ -105,37 +104,20 @@ var Inject = (function (){
 
     // messages coming from "background.js"
     function background_onMessage (request, sender, sendResponse){
-        if (request.data.view) return;
+        //if (request.data.view) return;
         processMessage(request);
     }
 
     function addParamsToConsole(params){
-        for (var val in params){
-            console.group(val);
-            var param = JSON.parse(params[val]);
-            for ( var i in param) {
-                console.log(i, param[i]);
-            }
-            console.groupEnd();
-        }
+			chrome.storage.sync.set({
+				barParams: params
+			})
     }
 
 
 	// messages -----------------------------------------------------------------
     function message_onIframeLoaded (data){
-        var view 		= getView(data.source),
-            allLoaded	= true;
-
-        view.isLoaded = true;
-
-        for (var i in _views){
-            if (_views[i].isLoaded === false) allLoaded = false;
-        }
-
-        // tell "background.js" that all the frames are loaded
-        if (allLoaded) {
-            tell('all-iframes-loaded');
-        }
+        tell('all-iframes-loaded');
     }
 
     function message_onOpenPlugin(data) {
@@ -143,13 +125,9 @@ var Inject = (function (){
             if (data.source == 'bluz' && typeof data.barParams != 'undefined') { // frames: 'bluz', 'details'
                 addParamsToConsole(data.barParams);
             }
-
-            _container.removeAttribute('style');
-            _container.style.bottom = "0";
-            _container.style.borderBottom = "1px solid #222";
-            _container.style.display = 'block';
-
-            document.getElementById(ID.IFRAME_PLUGIN).style.display = 'block';
+						chrome.storage.sync.set({
+		          data: data.debugParams
+		        })
         }
     }
 
@@ -179,6 +157,5 @@ var Inject = (function (){
 }());
 
 document.addEventListener("DOMContentLoaded", function (){
-    Inject.init();
+		Inject.init();
 }, false);
-

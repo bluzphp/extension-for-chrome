@@ -79,5 +79,5 @@ var Bluz = (function (){
     return _this;
 }());
 
-document.addEventListener("DOMContentLoaded", function (){ new Bluz.init(); }, false);
-
+document.addEventListener("DOMContentLoaded", function (){
+  new Bluz.init(); }, false);

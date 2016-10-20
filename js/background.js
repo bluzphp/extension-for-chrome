@@ -10,7 +10,8 @@ var Background = (function (){
         a               = null,
         COOKIE          = {},
         regExprDomain   = new RegExp(/[a-zA-Z0-9](-*[a-zA-Z0-9]+)*(\.[a-zA-Z0-9](-*[a-zA-Z0-9]+)*)+/);
-
+    var ports = [];
+    var openCount = 0;
 
     // initialize ---------------------------------------------------------------
     _this.init = function (){
@@ -33,6 +34,10 @@ var Background = (function (){
             {urls: ["http://*/*"]},["responseHeaders"]);
 
         chrome.browserAction.onClicked.addListener(onPopupClicked);
+
+        chrome.runtime.onConnect.addListener(onDevToolsMessages);
+
+        chrome.runtime.onConnect.addListener(onDevToolsOpen);
     };
 
     // private functions --------------------------------------------------------
@@ -52,17 +57,28 @@ var Background = (function (){
             if (_currPageUrl.match(new RegExp('https?'))) { // disable this action for url = chrome://extensions/
                 changeStateBtn();
                 if (COOKIE.debug.active) {
-                    _currDomain = _currPageUrl.match(regExprDomain)[0];
+                    _currDomain = _currPageUrl.match(regExprDomain);
+                    if (_currDomain !== null) {
+                      _currDomain = _currPageUrl.match(regExprDomain)[0];
+                    }
                     tellActivatePlugin();
                 } else {
                     _this.tell('plugin-close');
                 }
+
+                if (!_currPageUrl.match(new RegExp('bookmarks$'))) {
+                  chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
+                    chrome.tabs.executeScript(tab[0].id, {
+                      file: "./js/content_script.js",
+                      runAt: "document_start"
+                    });
+                  });
+                }
             }
         })
-
     }
 
-    function changeStateBtn() {
+    function changeStateBtn(tabId, changeInfo, tab) {
         chrome.cookies.get({"url": _currPageUrl, "name": COOKIE.debug.name}, function(cookie) {
             COOKIE.debug.active = !a.isEmpty(cookie);
         })
@@ -71,6 +87,13 @@ var Background = (function (){
             COOKIE.profiler.active = !a.isEmpty(cookie);
         })
 
+        if (changeInfo) {
+          if (changeInfo.status === 'complete') {
+            ports.forEach(function(port) {
+                port.postMessage({message: 'reloadPage'});
+            });
+          }
+        }
     }
 
     function tellActivatePlugin(){
@@ -133,6 +156,61 @@ var Background = (function (){
         }
     }
 
+    function onDevToolsMessages(port) {
+      if (port.name !== "devtools") return;
+      ports.push(port);
+      // Remove port when destroyed (eg when devtools instance is closed)
+      port.onDisconnect.addListener(function() {
+          var i = ports.indexOf(port);
+          if (i !== -1) ports.splice(i, 1);
+      });
+      port.onMessage.addListener(function(msg) {
+        if (msg === 'btnDebug-addCookie') {
+          _this.addCookie(COOKIE.debug.name);
+        }
+        if (msg === 'btnDebug-removeCookie') {
+          _this.removeCookie(COOKIE.debug.name);
+          chrome.storage.sync.set({
+            debugText: '',
+            barParams: ''
+          })
+        }
+        if (msg === 'btnProfiler-addCookie') {
+          _this.addCookie(COOKIE.profiler.name);
+        }
+        if (msg === 'btnProfiler-removeCookie') {
+          _this.removeCookie(COOKIE.profiler.name);
+        }
+      });
+    }
+
+    function onDevToolsOpen(port) {
+      if (port.name == "devtools") {
+        if (openCount == 0) {
+          chrome.storage.sync.get(["debugText"], function(res) {
+              ports.forEach(function(port) {
+                  port.postMessage({
+                    debugText: res.debugText,
+                    debug: COOKIE.debug.active,
+                    profiler: COOKIE.profiler.active,
+                    barParams: _barParams
+                  });
+              });
+          })
+        }
+        openCount++;
+
+        port.onDisconnect.addListener(function(port) {
+            openCount--;
+            if (openCount == 0) {
+              chrome.storage.sync.set({
+                isChecked: ''
+              })
+            }
+        });
+      }
+    }
+
     // messages -----------------------------------------------------------------
     function message_allIframesLoaded (data){
         updateCurrentTab();
@@ -168,21 +246,33 @@ var Background = (function (){
             _websites[_currDomain] = {status: 'hide'};
             if (nameCookie == COOKIE.debug.name) {
                 COOKIE.debug.active = false;
+                chrome.storage.sync.set({
+                  debug: false
+                })
                 _this.tell('plugin-close');
             } else {
                 COOKIE.profiler.active = false;
+                chrome.storage.sync.set({
+                  profiler: false
+                })
             }
         })
     };
 
     _this.addCookie = function(nameCookie) {
-        _this.removeCookie(nameCookie);
+        //_this.removeCookie(nameCookie);
         chrome.cookies.set({"url": _currPageUrl, "name" : nameCookie, "value" : "1"}, function(cookie) {
             _websites[_currDomain] = {status: 'show'};
             if (nameCookie == COOKIE.debug.name) {
                 COOKIE.debug.active = true;
+                chrome.storage.sync.set({
+                  debug: true
+                })
             } else {
                 COOKIE.profiler.active = true;
+                chrome.storage.sync.set({
+                  profiler: true
+                })
             }
             console.log('successfully add cookie' + cookie);
         })

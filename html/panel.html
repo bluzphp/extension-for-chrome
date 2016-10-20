@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" media="all" href="../css/bootstrap-table.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/panel.css" />
+  </head>
+  <body class='panel'>
+      <div class='devTools'>
+        <div class='devTools__item devToolsMenu'>
+          <nav class="navigation">
+            <ul class="navigation__list">
+              <li class="navigation__item">
+                <a class="nav-links cookie" href="#">Set cookie</a>
+              </li>
+              <li class="navigation__item">
+                <a class="nav-links debug" href="#">Debug</a>
+              </li>
+              <li class="navigation__item">
+                <a class="nav-links logs" href="#">Logs</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class='devTools__item devToolsContent'>
+            <div class="devToolsContent__header"></div>
+            <div id="pluginBox" class="bluz-plugin">
+                <div class="inner">
+                    <label class="make-switch switch--large has-switch" for="btnDebug">
+                    <input type="checkbox" class="checkbox--hidden" id="btnDebug">
+                    <div class="switch switchDebug switch-off">
+                        <span class="switch__span switch--left switch--large">on</span>
+                        <span class="switch__label switch--large">Debug</span>
+                        <span class="switch__span switch--right switch--large">off</span>
+                    </div>
+                  </label>
+                  <label class="make-switch switch--large has-switch" for="btnProfiler">
+                  <input type="checkbox" class="checkbox--hidden" id="btnProfiler">
+                  <div class="switch switchProfiler switch-off">
+                      <span class="switch__span switch--left switch--large">on</span>
+                      <span class="switch__label switch--large">Profiler</span>
+                      <span class="switch__span switch--right switch--large">off</span>
+                  </div>
+                </label>
+                </div>
+            </div>
+            <div class="bluz-plugin bluz-details"></div>
+            <div class="bluz-plugin bluz-logs">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Total time</td>
+                    <th>Spend time</td>
+                    <th>Size</td>
+                    <th>Information</td>
+                  </tr>
+                </thead>
+                <tbody id="logsTable"></tdoby>
+              </table>
+            </div>
+        </div>
+      </div>
+    <script src="../js/panel.js"></script>
+  </body>
+</html>
