@@ -1,5 +1,4 @@
 .bluz-details {
-  padding: 10px;
   font-size: 16px;
   white-space: pre;
 }
@@ -207,4 +206,36 @@ li {
 
 .switch--animate {
   transition: all .5s;
+}
+
+.debug-text {
+  padding: 20px;
+  border-bottom: 1px solid #303641;
+}
+
+.table.table-hover {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+}
+
+th {
+  text-align: right;
+  width: 15%;
+}
+
+th:last-child {
+  padding-left: 20px !important;
+  text-align: left;
+  width: 55%;
+}
+
+td {
+  text-align: right;
+  width: 15%;
+}
+
+td:last-child {
+  padding-left: 20px !important;
+  text-align: left;
+  width: 55%;
 }

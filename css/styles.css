@@ -1,4 +1,4 @@
-bluz-plugin {
+.bluz-plugin {
   height: 31px;
   width: 100%;
   font-family: arial, sun-serif;
@@ -73,6 +73,7 @@ table, td, th {
     border: 1px solid #222 !important;
 }
 
-/*#pluginBox {*/
-    /*background-color: #dbdbdb;*/
-/*}*/
+.debug-text {
+  width: 100%;
+  border-bottom: 3px solid black;
+}
