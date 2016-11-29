@@ -1,6 +1,7 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" media="all" href="../css/bootstrap-table.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="../css/font.css" />
     <link rel="stylesheet" type="text/css" media="all" href="../css/panel.css" />
   </head>
   <body class='panel'>
@@ -44,20 +45,28 @@
             </div>
             <div class="bluz-plugin bluz-details"></div>
             <div class="bluz-plugin bluz-logs">
-              <table class="table table-hover">
+              <table class="table table-hover sortable">
                 <thead>
                   <tr>
-                    <th>Total time</td>
-                    <th>Spend time</td>
-                    <th>Size</td>
-                    <th>Information</td>
+                    <th>Total time</th>
+                    <th><span class="title" id="spendTime">Spend time<span class="icon-down"></span></span></th>
+                    <th><span class="title" id="size">Size<span class="icon-down"></span></span></th>
+                    <th class="sorttable_nosort">Information</th>
                   </tr>
                 </thead>
-                <tbody id="logsTable"></tdoby>
+                <tbody id="logsTable">
+                  <tr style="display:none;">
+                    <td></td>
+                    <td></td>
+                    <td sorttable_customkey="1272"></td>
+                    <td></td>
+                  </tr>
+                </tdoby>
               </table>
             </div>
         </div>
       </div>
     <script src="../js/panel.js"></script>
+    <script src="../js/sorttable.js"></script>
   </body>
 </html>
