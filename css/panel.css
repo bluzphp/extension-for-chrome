@@ -1,5 +1,6 @@
 .bluz-details {
-  font-size: 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 15px;
   white-space: pre;
 }
 
@@ -218,8 +219,8 @@ li {
   font-size: 16px;
 }
 
-th {
-  text-align: right;
+th,
+td {
   width: 15%;
 }
 
@@ -229,13 +230,13 @@ th:last-child {
   width: 55%;
 }
 
-td {
-  text-align: right;
-  width: 15%;
-}
-
 td:last-child {
   padding-left: 20px !important;
   text-align: left;
   width: 55%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+  text-align: right;
 }

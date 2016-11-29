@@ -35,40 +35,6 @@ logs.addEventListener('click', function() {
   })
 });
 
-// spendTime.addEventListener('click', function(e) {
-//   el = e.toElement;
-//   if (el.childNodes[1]) {
-//     if (el.childNodes[1].classList.contains('icon-down')) {
-//       el.childNodes[1].className = 'icon-up';
-//     } else {
-//       el.childNodes[1].className = 'icon-down';
-//     }
-//   } else {
-//     if (el.classList.contains('icon-down')) {
-//       el.className = 'icon-up';
-//     } else {
-//       el.className = 'icon-down';
-//     }
-//   }
-// });
-//
-// size.addEventListener('click', function(e) {
-//   el = e.toElement;
-//   if (el.childNodes[1]) {
-//     if (el.childNodes[1].classList.contains('icon-down')) {
-//       el.childNodes[1].className = 'icon-up';
-//     } else {
-//       el.childNodes[1].className = 'icon-down';
-//     }
-//   } else {
-//     if (el.classList.contains('icon-down')) {
-//       el.className = 'icon-up';
-//     } else {
-//       el.className = 'icon-down';
-//     }
-//   }
-// });
-
 window.addEventListener('load', function() {
   chrome.storage.sync.get(["data", "debug", "profiler", "debugText", "isChecked"], function(res) {
     res.debugText.forEach(function(item) {
@@ -151,7 +117,8 @@ function parseBarParams() {
         var newTd2 = document.createElement('td');
         newTd2.innerHTML = infoArr[1];
         var newTd3 = document.createElement('td');
-        newTd3.innerHTML = parseInt(infoArr[2]);
+        newTd3.innerHTML = infoArr[2].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
+        newTd3.setAttribute("sorttable_customkey", parseInt(infoArr[2]));
         var newTd4 = document.createElement('td');
         newTd4.innerHTML = param[i];
 
